@@ -45,6 +45,7 @@
 		"dts": "dts-buddy --write && publint",
 		"test": "vitest --coverage",
 		"prepublishOnly": "pnpm dts",
+		"ci:test": "vitest run --coverage",
 		"ci:version": "changeset version",
 		"ci:publish": "changeset tag && pnpm publish -r --no-git-checks --access public"
 	},
