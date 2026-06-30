@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import asDefault, { remarkCustomBlockquote as asNamed } from '../src';
+import asDefault, { remarkTransformBlockquote as asNamed } from '../src';
 
 test('named exported should be available', () => {
 	expect(asNamed).toBeDefined();

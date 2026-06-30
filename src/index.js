@@ -3,5 +3,5 @@
 export * from "./plugin.js";
 export * from "./types.public.js";
 
-import { remarkCustomBlockquote } from "./plugin.js";
-export default remarkCustomBlockquote;
+import { remarkTransformBlockquote } from "./plugin.js";
+export default remarkTransformBlockquote;

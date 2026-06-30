@@ -1,5 +1,5 @@
 {
-	"name": "remark-custom-blockquote",
+	"name": "remark-transform-blockquote",
 	"version": "0.0.1",
 	"description": "customize Markdown blockquote",
 	"license": "MIT",
@@ -8,13 +8,13 @@
 		"name": "quang",
 		"url": "https://github.com/vnphanquang"
 	},
-	"homepage": "https://github.com/vnphanquang/jsconfig/tree/main/pacakges/remark-custom-blockquote",
+	"homepage": "https://github.com/vnphanquang/jsconfig/tree/main/pacakges/remark-transform-blockquote",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/vnphanquang/remark-custom-blockquote.git"
+		"url": "git+https://github.com/vnphanquang/remark-transform-blockquote.git"
 	},
 	"bugs": {
-		"url": "https://github.com/vnphanquang/remark-custom-blockquote/issues"
+		"url": "https://github.com/vnphanquang/remark-transform-blockquote/issues"
 	},
 	"keywords": [
 		"remark",

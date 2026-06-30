@@ -12,7 +12,7 @@ env:
   CI: true
 jobs:
   Version:
-    if: github.repository == 'vnphanquang/remark-custom-blockquote' # prevents this action from running on forks
+    if: github.repository == 'vnphanquang/remark-transform-blockquote' # prevents this action from running on forks
     permissions:
       contents: write # to create release (changesets/action)
       id-token: write # OpenID Connect token needed for provenance

@@ -5,10 +5,10 @@ import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 import { describe, expect, test } from 'vitest';
 
-import { remarkCustomBlockquote } from '../src/plugin';
+import { remarkTransformBlockquote } from '../src/plugin';
 import type {
-	RemarkCustomBlockquoteMapping,
-	RemarkCustomBlockquoteOptions,
+	RemarkTransformBlockquoteMapping,
+	RemarkTransformBlockquoteOptions,
 } from '../src/types.public';
 
 const markdown = dedent;
@@ -21,17 +21,17 @@ function matchStringIgnoringWhitespace(actual: string, expected: string) {
 	expect(normalize(actual)).toBe(normalize(expected));
 }
 
-const mappings: RemarkCustomBlockquoteMapping[] = [
+const mappings: RemarkTransformBlockquoteMapping[] = [
 	{
 		marker: '!CUSTOM',
 		attributes: { class: 'custom-block' },
 	},
 ];
 
-async function processWithPlugin(input: string, options?: RemarkCustomBlockquoteOptions) {
+async function processWithPlugin(input: string, options?: RemarkTransformBlockquoteOptions) {
 	const output = await unified()
 		.use(remarkParse)
-		.use(remarkCustomBlockquote, options)
+		.use(remarkTransformBlockquote, options)
 		.use(remarkRehype)
 		.use(rehypeStringify)
 		.process(input);

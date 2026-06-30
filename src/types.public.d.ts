@@ -1,8 +1,8 @@
-export interface RemarkCustomBlockquoteOptions {
-	mappings: RemarkCustomBlockquoteMapping[];
+export interface RemarkTransformBlockquoteOptions {
+	mappings: RemarkTransformBlockquoteMapping[];
 }
 
-export interface RemarkCustomBlockquoteMapping {
+export interface RemarkTransformBlockquoteMapping {
 	/**
 	 * pattern to match against
 	 */

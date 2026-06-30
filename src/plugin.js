@@ -1,12 +1,12 @@
 import { CONTINUE, SKIP, visit } from 'unist-util-visit';
 
 /**
- * Remark plugin that turns blockquotes with special marker into a customisable element,
+ * Remark plugin that turns a blockquote with special marker into a customisable element,
  * similar to {@link https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts|Github Markdown Alerts}
- * @param {import('./types.public').RemarkCustomBlockquoteOptions} [options] - configure the plugin behavior
+ * @param {import('./types.public').RemarkTransformBlockquoteOptions} [options] - configure the plugin behavior
  * @returns {import('unified').Transformer<import('mdast').Root, import('mdast').Root>}
  */
-export function remarkCustomBlockquote(options) {
+export function remarkTransformBlockquote(options) {
 	const { mappings = [] } = options ?? {};
 
 	/**
