@@ -1,0 +1,85 @@
+{
+	"name": "remark-custom-blockquote",
+	"version": "0.0.1",
+	"description": "customize Markdown blockquote",
+	"license": "MIT",
+	"author": {
+		"email": "oss@vnphanquang.com",
+		"name": "quang",
+		"url": "https://github.com/vnphanquang"
+	},
+	"homepage": "https://github.com/vnphanquang/jsconfig/tree/main/pacakges/remark-custom-blockquote",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vnphanquang/remark-custom-blockquote.git"
+	},
+	"bugs": {
+		"url": "https://github.com/vnphanquang/remark-custom-blockquote/issues"
+	},
+	"keywords": [
+		"remark",
+		"unified",
+		"blockquote",
+		"alert",
+		"callout",
+		"admonitions"
+	],
+	"type": "module",
+	"main": "src/index.js",
+	"types": "types/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./types/index.d.ts",
+			"import": "./src/index.js"
+		}
+	},
+	"files": [
+		"src",
+		"types",
+		"README.md"
+	],
+	"scripts": {
+		"prepare": "lefthook install",
+		"lint": "eslint .",
+		"format": "prettier . --check",
+		"dts": "dts-buddy --write && publint",
+		"test": "vitest --coverage",
+		"prepublishOnly": "pnpm dts",
+		"ci:version": "changeset version",
+		"ci:publish": "changeset tag && pnpm publish -r --no-git-checks --access public"
+	},
+	"devDependencies": {
+		"@types/mdast": "^4.0.4",
+		"@vitest/coverage-v8": "^4.1.9",
+		"@vitest/ui": "^4.1.9",
+		"@vnphanquang/eslint-config": "^4.2.1",
+		"dedent": "^1.7.2",
+		"dts-buddy": "^0.8.2",
+		"eslint": "^10.6.0",
+		"eslint-plugin-jsdoc": "^63.0.10",
+		"prettier": "^3.9.1",
+		"prettier-plugin-embed": "^0.5.1",
+		"publint": "^0.3.21",
+		"rehype-stringify": "^10.0.1",
+		"remark-parse": "^11.0.0",
+		"remark-rehype": "^11.1.2",
+		"typescript": "^6.0.3",
+		"unified": "^11.0.5",
+		"vitest": "^4.1.9"
+	},
+	"dependencies": {
+		"unist-util-visit": "^5.1.0"
+	},
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "24.16.0",
+			"onFail": "download"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": "^11.9.0",
+			"onFail": "download"
+		}
+	}
+}
