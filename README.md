@@ -1,6 +1,6 @@
 # remark-transform-blockquote
 
-turn a blockquote with special marker into a customisable element, similar but not limited to [Github Markdown Alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)
+turn a blockquote with special marker into a customisable element, similar but not limited to [Github Markdown Alerts][gfm.alert]
 
 [![MIT][license.badge]][license] [![npm.badge]][npm] [![codecov][codecov.badge]][codecov]
 
@@ -51,11 +51,109 @@ will transform the following input...
 </section>
 ```
 
+## Presets
+
+The package expose some presets for common use cases.
+
+1. Specify preset:
+
+   ```typescript
+   const output = await unified()
+   	.use(remarkParse)
+   	.use(remarkTransformBlockquote, { preset: '<preset>' });
+   ```
+
+2. Import CSS
+
+   ```css
+   @import 'remark-transform-blockquote/presets/<preset>.css';
+   ```
+
+Where `<preset>` is listed in the following sections.
+
+### `github`
+
+Alerts that matches [Github Markdown Alerts][gfm.alert].
+
+Input:
+
+```markdown
+> [!<VARIANT>]
+> ...
+```
+
+Output:
+
+```html
+<div class="markdown-alert markdown-alert-<variant>" data-title="<Variant>">...</div>
+```
+
+Where `<VARIANT>` is one of `{INFO, SUCCESS, WARNING, DANGER}`.
+
+#### CSS Custom Properties
+
+| CSS Variable                      | Description                              | Default Value |
+| --------------------------------- | ---------------------------------------- | ------------- |
+| `--alert-padding-block`           | [padding-inline] of container            | `1rem`        |
+| `--alert-padding-inline`          | [padding-block] of container             | `0.5rem`      |
+| `--alert-margin-block-end`        | [margin-block-end] of container          | `1rem`        |
+| `--alert-border-width`            | [border-inline-start-width] of container | `0.25em`      |
+| `--alert-icon-size`               | `width` & `height` of the icon           | `1rem`        |
+| `--alert-header-margin-block-end` | [margin-block-end] of the title and icon | `1rem`        |
+| `--alert-title-font-weight`       | `color` of the title                     | `500`         |
+
+Modifier variables (changed per variant):
+
+| CSS Variable           | Description                              | Default Value  | Set to                           |
+| ---------------------- | ---------------------------------------- | -------------- | -------------------------------- |
+| `--alert-border-color` | [border-inline-start-color] of container | `currentcolor` | `--alert-<variant>-border-color` |
+| `--alert-header-color` | `color` of the title and icon            | `currentcolor` | `--alert-<variant>-header-color` |
+| `--alert-icon`         | an url-encoded SVG                       |                | `--alert-<variant>-icon`         |
+
+See [presets/github.css](https://github.com/vnphanquang/remark-transform-blockquote/blob/main/src/presets/github/github.css) for details.
+
+> [!NOTE]
+> The color variables use CSS new [light-dark] function for minimal light/dark mode support.
+
+To provide customisation, set the CSS variables where appropriate, e.g.
+
+```css
+/* my-design-system.css */
+:root {
+	--alert-icon-size: 1.25rem;
+	--alert-note-icon: url('...');
+	--alert-success-border-color: green;
+	--alert-success-header-color: darkgreen;
+	/* ... */
+}
+```
+
+#### Icons
+
+SVG icons are also available should you need to reference / use them. For example:
+
+```javascript
+// assuming vite or some bundler that supports importing SVG files.
+import svg from 'remark-transform-blockquote/presets/github/icons/note.svg'; // replace with <variant>.svg as needed
+```
+
+### `comeau`
+
+Callout boxes based on [Josh Comeau's Blog](https://www.joshwcomeau.com/blog/how-i-built-my-blog-v2/).
+
+| CSS Variable | Description |
+| ------------ | ----------- |
+|              |             |
+
 ## Related Projects / Prior Arts
 
 - [montogeek/remark-custom-blockquotes](https://github.com/montogeek/remark-custom-blockquotes)
 - [jaywcjlove/remark-github-blockquote-alert](https://github.com/jaywcjlove/remark-github-blockquote-alert)
 - [nylonbricks/remark-blockquote-alerts](https://github.com/nylonbricks/remark-blockquote-alerts)
+- [lin-stephanie/remark-admonition-to-blockquote-callout](https://github.com/lin-stephanie/remark-admonition-to-blockquote-callout)
+- [incentro-ecx/remark-github-admonitions-to-directives](https://github.com/incentro-ecx/remark-github-admonitions-to-directives)
+
+[gfm.alert]: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts
 
 <!-- header badges -->
 
@@ -65,3 +163,9 @@ will transform the following input...
 [npm]: https://www.npmjs.com/package/remark-transform-blockquote
 [codecov]: https://codecov.io/github/vnphanquang/remark-transform-blockquote
 [codecov.badge]: https://codecov.io/github/vnphanquang/remark-transform-blockquote/graph/badge.svg?token=dKkYUy4evr
+[padding-inline]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-inline
+[padding-block]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-block
+[margin-block-end]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-block-end
+[border-inline-start-width]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-width
+[border-inline-start-color]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-color
+[light-dark]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark
