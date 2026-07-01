@@ -8,11 +8,15 @@ pre-commit:
     - merge
     - rebase
   commands:
-    1_lint:
+    1_elint:
       run: pnpm eslint --fix {staged_files}
       glob: '*.{js,ts}'
       stage_fixed: true
-    2_format:
+    2_stylelint:
+      run: pnpm stylelint --fix {staged_files}
+      glob: '*.css'
+      stage_fixed: true
+    3_prettier:
       run: pnpm prettier --write {staged_files}
       glob: '*.{js,ts,json,md,yaml}'
       stage_fixed: true
