@@ -1,5 +1,5 @@
 export interface RemarkTransformBlockquoteOptions {
-	mappings: RemarkTransformBlockquoteMapping[];
+	mappings?: RemarkTransformBlockquoteMapping[];
 }
 
 export interface RemarkTransformBlockquoteMapping {
