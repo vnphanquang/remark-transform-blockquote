@@ -4,7 +4,31 @@ export interface RemarkTransformBlockquoteOptions {
 
 export interface RemarkTransformBlockquoteMapping {
 	/**
-	 * pattern to match against
+	 * pattern to match against, in the format "!<string>" where <string> is case-sensitive.
+	 *
+	 * @example
+	 *
+	 * this settings...
+	 *
+	 * ```typescript
+	 * await unified().use(remarkParse).use(remarkTransformBlockquote, {
+	 *   mappings: [
+	 *     { marker: '!INFO', attributes: { class: 'alert-info' } },
+	 *     { marker: '!WARNING', attributes: { class: 'alert-warning' } },
+	 *     ...
+	 *   ]
+	 * })
+	 * ```
+	 *
+	 * ...will match:
+	 *
+	 * ```markdown
+	 * > [!INFO]
+	 * > This is an info blockquote
+	 *
+	 * > [!WARNING]
+	 * > This is a warning blockquote
+	 * ```
 	 */
 	marker: `!${string}`;
 	/**
