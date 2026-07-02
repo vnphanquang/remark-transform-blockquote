@@ -71,7 +71,7 @@ The package expose some presets for common use cases.
 
 Where `<preset>` is listed in the following sections.
 
-### `github`
+### Preset: `github`
 
 Alerts that matches [Github Markdown Alerts][gfm.alert].
 
@@ -88,29 +88,29 @@ Output:
 <div class="markdown-alert markdown-alert-<variant>" data-title="<Variant>">...</div>
 ```
 
-Where `<VARIANT>` is one of `{INFO, SUCCESS, WARNING, DANGER}`.
+Where `<VARIANT>` is one of `{NOTE, TIP, IMPORTANT, WARNING, CAUTION}`.
 
 #### CSS Custom Properties
 
-| CSS Variable                      | Description                              | Default Value |
-| --------------------------------- | ---------------------------------------- | ------------- |
-| `--alert-padding-block`           | [padding-inline] of container            | `1rem`        |
-| `--alert-padding-inline`          | [padding-block] of container             | `0.5rem`      |
-| `--alert-margin-block-end`        | [margin-block-end] of container          | `1rem`        |
-| `--alert-border-width`            | [border-inline-start-width] of container | `0.25em`      |
-| `--alert-icon-size`               | `width` & `height` of the icon           | `1rem`        |
-| `--alert-header-margin-block-end` | [margin-block-end] of the title and icon | `1rem`        |
-| `--alert-title-font-weight`       | `color` of the title                     | `500`         |
+| CSS Variable                      | Description                              | Fallback |
+| --------------------------------- | ---------------------------------------- | -------- |
+| `--alert-padding-block`           | [padding-inline] of container            | `1rem`   |
+| `--alert-padding-inline`          | [padding-block] of container             | `0.5rem` |
+| `--alert-margin-block-end`        | [margin-block-end] of container          | `1rem`   |
+| `--alert-border-width`            | [border-inline-start-width] of container | `0.25em` |
+| `--alert-icon-size`               | `width` & `height` of the icon           | `1rem`   |
+| `--alert-header-margin-block-end` | [margin-block-end] of the title and icon | `1rem`   |
+| `--alert-title-font-weight`       | `color` of the title                     | `500`    |
 
 Modifier variables (changed per variant):
 
-| CSS Variable           | Description                              | Default Value  | Set to                           |
+| CSS Variable           | Description                              | Fallback       | Set to                           |
 | ---------------------- | ---------------------------------------- | -------------- | -------------------------------- |
 | `--alert-border-color` | [border-inline-start-color] of container | `currentcolor` | `--alert-<variant>-border-color` |
 | `--alert-header-color` | `color` of the title and icon            | `currentcolor` | `--alert-<variant>-header-color` |
 | `--alert-icon`         | an url-encoded SVG                       |                | `--alert-<variant>-icon`         |
 
-See [presets/github.css](https://github.com/vnphanquang/remark-transform-blockquote/blob/main/src/presets/github/github.css) for details.
+See [presets/github.css](https://github.com/vnphanquang/remark-transform-blockquote/blob/main/src/presets/github/github.css) for more information.
 
 > [!NOTE]
 > The color variables use CSS new [light-dark] function for minimal light/dark mode support.
@@ -137,13 +137,82 @@ SVG icons are also available should you need to reference / use them. For exampl
 import svg from 'remark-transform-blockquote/presets/github/icons/note.svg'; // replace with <variant>.svg as needed
 ```
 
-### `comeau`
+### Preset: `comeau`
 
-Callout boxes based on [Josh Comeau's Blog](https://www.joshwcomeau.com/blog/how-i-built-my-blog-v2/).
+Sidenotes based on [Josh Comeau's Blog](https://www.joshwcomeau.com/blog/how-i-built-my-blog-v2/).
 
-| CSS Variable | Description |
-| ------------ | ----------- |
-|              |             |
+Input:
+
+```markdown
+> [!<VARIANT>]
+> ...
+```
+
+Output:
+
+```html
+<aside class="md-sidenote md-sidenote-<variant>">
+	<div class="md-sidenote-decoration"></div>
+	...
+</aside>
+```
+
+Where `<VARIANT>` is one of `{INFO, SUCCESS, WARNING}`.
+
+#### CSS Custom Properties
+
+| CSS Variable                    | Description                       | Fallback |
+| ------------------------------- | --------------------------------- | -------- |
+| `--sidenote-margin-block-start` | [margin-block-start] of container | 2rem     |
+| `--sidenote-margin-block-end`   | [margin-block-end] of container   | 4rem     |
+| `--sidenote-padding-block`      | [padding-block] of container      | 1.5rem   |
+
+Modifier variables (changed per variant):
+
+| CSS Variable                  | Description                   | Fallback | Set to                                |
+| ----------------------------- | ----------------------------- | -------- | ------------------------------------- |
+| `--sidenote-icon`             | an 32x32 url-encoded SVG      |          | `--sidenote-<variant>-icon`           |
+| `--sidenote-decoration-color` | color for icon & left border  |          | `sidenote-<variant>-decoration-color` |
+| `--sidenote-background-color` | background color of container |          | `sidenote-<variant>-background-color` |
+
+> [!NOTE]
+> The color variables use CSS new [light-dark] function for minimal light/dark mode support.
+
+Responsive variables:
+
+| CSS Variable                | Description                           | Fallback | Fallback (>= 35.1875rem) |
+| --------------------------- | ------------------------------------- | -------- | ------------------------ |
+| `--sidenote-padding-inline` | [padding-inline] of container         | 1rem     | 2rem                     |
+| `--sidenote-margin-inline`  | negative [margin-inline] of container | 1rem     | 2rem                     |
+
+When you provide custom value for responsive variables, make sure to set them at each breakpoint, e.g.
+
+```css
+:root {
+	--sidenote-padding-inline: 0.5rem;
+	--sidenote-margin-inline: 0.5rem;
+
+	@media (width >= 35.1875rem) {
+		--sidenote-padding-inline: 1rem;
+		--sidenote-margin-inline: 1rem;
+	}
+}
+```
+
+See [presets/comeau.css](https://github.com/vnphanquang/remark-transform-blockquote/blob/main/src/presets/comeau/comeau.css) for more information.
+
+> [!NOTE]
+> For simplicity, this preset does not include some enhancements that Josh has for his component,
+> for example `:selection` color or contextual color for codeblocks within.
+
+#### Icons
+
+SVG icons are also available should you need to reference / use them. For example:
+
+```javascript
+// assuming vite or some bundler that supports importing SVG files.
+import svg from 'remark-transform-blockquote/presets/comeau/icons/info.svg'; // replace with <variant>.svg as needed
+```
 
 ## Related Projects / Prior Arts
 
@@ -165,6 +234,7 @@ Callout boxes based on [Josh Comeau's Blog](https://www.joshwcomeau.com/blog/how
 [codecov.badge]: https://codecov.io/github/vnphanquang/remark-transform-blockquote/graph/badge.svg?token=dKkYUy4evr
 [padding-inline]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-inline
 [padding-block]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/padding-block
+[margin-block-start]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-block-start
 [margin-block-end]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/margin-block-end
 [border-inline-start-width]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-width
 [border-inline-start-color]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-inline-start-color

@@ -1,0 +1,153 @@
+.md-sidenote {
+	--sidenote-border-width: 3px;
+	--sidenote-icon-size: 32px;
+
+	position: relative;
+
+	margin-block: var(--sidenote-margin-block-start, 2rem) var(--sidenote-margin-block-start, 4rem);
+	margin-inline: calc(var(--sidenote-margin-inline, 1rem) * -1);
+	padding-block: var(--sidenote-padding-block, 1.5rem);
+	padding-inline: calc(var(--sidenote-padding-inline, 1rem) - var(--sidenote-border-width))
+		var(--sidenote-padding-inline, 1rem);
+	border-inline-start: var(--sidenote-border-width) solid transparent;
+	border-radius: 0 4px 4px 0;
+
+	@media (width >= 35.1875rem) {
+		margin-inline: calc(var(--sidenote-margin-inline, 2rem) * -1);
+		padding-inline: calc(var(--sidenote-padding-inline, 2rem) - var(--sidenote-border-width))
+			var(--sidenote-padding-inline, 2rem);
+	}
+}
+
+/** icon */
+.md-sidenote::before {
+	content: '';
+
+	position: absolute;
+	inset-block-start: calc(var(--sidenote-icon-size) / -2 - 1.5px);
+	inset-inline-start: calc(var(--sidenote-icon-size) / -2 - 1.5px);
+
+	display: none;
+
+	width: var(--sidenote-icon-size);
+	height: var(--sidenote-icon-size);
+
+	background-color: var(--sidenote-decoration-color);
+
+	mask-image: var(--sidenote-icon);
+	mask-repeat: no-repeat;
+	mask-position: center;
+	mask-size: var(--sidenote-icon-size);
+
+	@media (width >= 51.6875rem) {
+		display: block;
+	}
+}
+
+/** clipping the background under icon */
+.md-sidenote::after {
+	content: '';
+
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	inset-inline-start: calc(var(--sidenote-border-width) * -1);
+
+	background-color: var(--sidenote-background-color, light-dark(#f8f9fa, #1a1a1a));
+
+	@media (width >= 51.6875rem) {
+		clip-path: var(--sidenote-clip);
+	}
+}
+
+/** left border */
+.md-sidenote-decoration::before {
+	content: '';
+
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: calc(var(--sidenote-border-width) * -1);
+
+	width: var(--sidenote-border-width);
+
+	background-color: var(--sidenote-decoration-color, light-dark(#1a1a1a, #f8f9fa));
+
+	@media (width >= 51.6875rem) {
+		inset-block-start: calc(var(--sidenote-border-mask-height, 5px) - 5px);
+		border-radius: 0 0 100px 100px;
+	}
+}
+
+/** top part of the border */
+.md-sidenote-decoration::after {
+	content: '';
+
+	position: absolute;
+	inset-block-start: -1px;
+	inset-inline-start: calc(var(--sidenote-border-width) * -1);
+
+	display: none;
+
+	width: var(--sidenote-border-mask-width);
+	height: var(--sidenote-border-mask-height);
+
+	background-color: var(--sidenote-decoration-color, light-dark(#1a1a1a, #f8f9fa));
+
+	mask-image: var(--sidenote-border-mask);
+	mask-repeat: no-repeat;
+	mask-position: center;
+	mask-size: var(--sidenote-border-mask-width) var(--sidenote-border-mask-height);
+
+	@media (width >= 51.6875rem) {
+		display: block;
+	}
+}
+
+.md-sidenote-info {
+	--sidenote-icon: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22currentcolor%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m2%2012a10%2010%200%201020%200A10%2010%200%20102%2012m10%204v-4m0-4h.01%22%2F%3E%3C%2Fsvg%3E');
+	--sidenote-decoration-color: var(--sidenote-info-decoration-color, light-dark(#43f, #36f));
+	--sidenote-background-color: var(--sidenote-info-background-color, light-dark(#e8f1fc, #172436));
+}
+
+.md-sidenote-success {
+	--sidenote-icon: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22currentcolor%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m21.801%2010A10%2010%200%201117%203.335%22%2F%3E%3Cpath%20d%3D%22m9%2011%203%203L22%204%22%2F%3E%3C%2Fsvg%3E');
+	--sidenote-decoration-color: var(--sidenote-success-decoration-color, light-dark(#008035, #0c8));
+	--sidenote-background-color: var(
+		--sidenote-success-background-color,
+		light-dark(#ecf8f4, #112221)
+	);
+}
+
+.md-sidenote-info,
+.md-sidenote-success {
+	--sidenote-border-mask: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2235%22%20fill%3D%22none%22%20viewBox%3D%220%200%2029%2035%22%3E%3Cpath%20fill%3D%22currentcolor%22%20d%3D%22M0%2029.611a5.31%205.31%200%20014.248-5.203l.6%202.94A2.31%202.31%200%20003%2029.611Zm6.569-5.676A23.704%2023.704%200%200025.502%201.923l2.996.154A26.704%2026.704%200%20017.168%2026.874Zm-2.321.473%202.32-.474.6%202.94-2.32.474ZM0%2034.5V29.611H3V34.5ZM25.502%201.923a1.5%201.5%200%20012.996.154Z%22%2F%3E%3C%2Fsvg%3E');
+	--sidenote-border-mask-width: 29px;
+	--sidenote-border-mask-height: 35px;
+	--sidenote-clip: path(
+		'M2000 2000H0V30.5H2V25.6113C2.00001 24.5134 2.77286 23.5672 3.84863 23.3477L6.16895 22.874C17.4664 20.5683 25.931 11.3021 27.3291 0H2000V2000Z'
+	);
+}
+
+.md-sidenote-warning {
+	--sidenote-icon: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22currentcolor%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m21.73%2018-8-14a2%202%200%2000-3.48%200l-8%2014A2%202%200%20004%2021h16a2%202%200%20001.73-3M12%209v4m0%204h.01%22%2F%3E%3C%2Fsvg%3E');
+	--sidenote-border-mask: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2235%22%20fill%3D%22none%22%20viewBox%3D%220%200%2038%2035%22%3E%3Cpath%20fill%3D%22currentcolor%22%20d%3D%22m7.5%2027A4.5%204.5%200%20003%2031.5H0A7.5%207.5%200%20017.5%2024zm11.123-3c7.28%200%2011.854-7.85%208.267-14.183l2.61-1.479C34.221%2016.67%2028.201%2027%2018.623%2027zm7.432-21.739%203.444%206.076-2.61%201.48-3.444-6.077zM3%2031.5v3.25H0V31.5zM7.5%2024h11.123v3H7.5zM23.445%203.74a1.5%201.5%200%20112.61-1.48z%22%2F%3E%3C%2Fsvg%3E');
+	--sidenote-border-mask-width: 37.5px;
+	--sidenote-border-mask-height: 35px;
+	--sidenote-clip: path(
+		'M2000 2000H0V31.75H1V28.5C1 26.0147 3.0147 24 5.5 24H16.623C26.2009 24 32.221 13.6698 27.499 5.33691L24.4736 0H2000V2000Z'
+	);
+	--sidenote-decoration-color: var(--sidenote-warning-decoration-color, light-dark(#ff9d00, #fa0));
+	--sidenote-background-color: var(
+		--sidenote-warning-background-color,
+		light-dark(#fbf4d0, #231c15)
+	);
+}
+
+.md-sidenote > :first-child,
+.md-sidenote-decoration + * {
+	margin-block-start: 0;
+}
+
+.md-sidenote > :last-child {
+	margin-block-end: 0;
+}
