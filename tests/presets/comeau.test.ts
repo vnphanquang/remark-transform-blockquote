@@ -28,9 +28,10 @@ describe('should transform matching blockquote', () => {
 		matchStringIgnoringWhitespace(
 			output,
 			html`
-				<div class="callout callout-info">
+				<aside class="md-sidenote md-sidenote-info">
+					<div class="md-sidenote-decoration"></div>
 					<p>General information that users should know.</p>
-				</div>
+				</aside>
 		`,
 		);
 	});
@@ -40,9 +41,10 @@ describe('should transform matching blockquote', () => {
 		matchStringIgnoringWhitespace(
 			output,
 			html`
-				<div class="callout callout-success">
+				<aside class="md-sidenote md-sidenote-success">
+					<div class="md-sidenote-decoration"></div>
 					<p>Indicates a successful or positive action.</p>
-				</div>
+				</aside>
 		`,
 		);
 	});
@@ -52,9 +54,10 @@ describe('should transform matching blockquote', () => {
 		matchStringIgnoringWhitespace(
 			output,
 			html`
-				<div class="callout callout-warning">
+				<aside class="md-sidenote md-sidenote-warning">
+					<div class="md-sidenote-decoration"></div>
 					<p>Urgent info that needs immediate user attention to avoid problems.</p>
-				</div>
+				</aside>
 		`,
 		);
 	});

@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/reject-any-type */
 import { CONTINUE, SKIP, visit } from 'unist-util-visit';
 
 import { PRESET_MAPPINGS_COMEAU, PRESET_MAPPINGS_GITHUB } from './presets/index.js';
@@ -32,7 +33,7 @@ export function remarkTransformBlockquote(options) {
 	return function (tree) {
 		if (mappings.length === 0) return;
 
-		visit(tree, (node, index) => {
+		visit(tree, (node, index, parent) => {
 			if (node.type !== 'blockquote') return CONTINUE;
 
 			if (!node.children || node.children.length === 0) return CONTINUE;
@@ -72,19 +73,21 @@ export function remarkTransformBlockquote(options) {
 					// adding attributes to `hProperties`, as documented here:
 					// https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
 					node.data ??= {};
-					// eslint-disable-next-line jsdoc/reject-any-type
 					/** @type {any} */ (node.data).hProperties ??= {};
 					for (const [key, value] of Object.entries(mapping.attributes ?? {})) {
-						// eslint-disable-next-line jsdoc/reject-any-type
 						/** @type {any} */ (node.data).hProperties[key] = value;
 					}
 
-					// eslint-disable-next-line jsdoc/reject-any-type
 					/** @type {any} */ (node.data).hName = mapping.tag ?? 'div';
+
+					if (mapping.hooks?.post) {
+						mapping.hooks.post(node, index, parent, tree)
+					}
 
 					break;
 				}
 			}
+
 			return [SKIP, index];
 		});
 	};

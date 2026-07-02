@@ -80,6 +80,7 @@
 		"vitest": "^4.1.9"
 	},
 	"dependencies": {
+		"unist-builder": "^4.0.0",
 		"unist-util-visit": "^5.1.0"
 	},
 	"devEngines": {

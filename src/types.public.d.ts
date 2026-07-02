@@ -1,3 +1,5 @@
+import type { Blockquote, Root, RootContent } from 'mdast';
+
 /** configure the behavior of `remark-transform-blockquote` */
 export interface RemarkTransformBlockquoteOptions {
 	/**
@@ -59,4 +61,18 @@ export interface RemarkTransformBlockquoteMapping {
 	 * typically this should be the corresponding attributes if converted to HTML
 	 */
 	attributes: Record<string, string>;
+	/**
+	 * additional processing to perform on matching node
+	 */
+	hooks?: {
+		/**
+		 * called after the blockquote node is matched and transformed with `tag` & `attributes` options
+		 */
+		post?: (
+			node: Blockquote,
+			index: number | undefined,
+			parent: Root | RootContent | undefined,
+			tree: Root,
+		) => void;
+	};
 }
