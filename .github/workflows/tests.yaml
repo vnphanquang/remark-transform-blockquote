@@ -9,6 +9,11 @@ on:
       - 'vitest.config.ts'
       - '.github/workflows/tests.yaml'
   pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'vitest.config.ts'
+      - '.github/workflows/tests.yaml'
   workflow_dispatch:
 
 env:
