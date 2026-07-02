@@ -2,6 +2,7 @@
 	--sidenote-border-width: 3px;
 	--sidenote-icon-size: 32px;
 
+	isolation: isolate;
 	position: relative;
 
 	margin-block: var(--sidenote-margin-block-start, 2rem) var(--sidenote-margin-block-start, 4rem);
