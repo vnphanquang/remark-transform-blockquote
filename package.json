@@ -8,7 +8,7 @@
 		"name": "quang",
 		"url": "https://github.com/vnphanquang"
 	},
-	"homepage": "https://github.com/vnphanquang/jsconfig/tree/main/pacakges/remark-transform-blockquote",
+	"homepage": "https://github.com/vnphanquang/remark-transform-blockquote",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/vnphanquang/remark-transform-blockquote.git"
