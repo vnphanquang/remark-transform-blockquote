@@ -11,8 +11,9 @@
 		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"noUnusedParameters": true,
+		"types": ["vite/client"]
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "tests/**/*"],
 	"exclude": ["node_modules"]
 }

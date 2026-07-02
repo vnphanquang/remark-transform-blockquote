@@ -48,9 +48,9 @@
 		"lint": "run-p lint:*",
 		"format": "prettier . --check",
 		"dts": "dts-buddy --write && publint",
-		"test": "vitest --coverage",
+		"test": "vitest --coverage --browser.headless",
 		"prepublishOnly": "pnpm dts",
-		"ci:test": "vitest run --coverage",
+		"ci:test": "vitest run --coverage --browser.headless",
 		"ci:version": "changeset version",
 		"ci:publish": "changeset tag && pnpm publish -r --no-git-checks --access public"
 	},
@@ -58,6 +58,7 @@
 		"@changesets/changelog-github": "^0.7.0",
 		"@changesets/cli": "^2.31.0",
 		"@types/mdast": "^4.0.4",
+		"@vitest/browser-playwright": "^4.1.9",
 		"@vitest/coverage-v8": "^4.1.9",
 		"@vitest/ui": "^4.1.9",
 		"@vnphanquang/eslint-config": "^4.2.1",
@@ -77,6 +78,7 @@
 		"stylelint-config-standard": "^40.0.0",
 		"typescript": "^6.0.3",
 		"unified": "^11.0.5",
+		"vite": "^8.1.2",
 		"vitest": "^4.1.9"
 	},
 	"dependencies": {
