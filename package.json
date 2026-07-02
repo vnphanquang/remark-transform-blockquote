@@ -44,7 +44,7 @@
 	],
 	"scripts": {
 		"lint:es": "eslint .",
-		"lint:style": "stylelint '**/*.css'",
+		"lint:style": "stylelint \"**/*.css\"",
 		"lint": "run-p lint:*",
 		"format": "prettier . --check",
 		"dts": "dts-buddy --write && publint",
