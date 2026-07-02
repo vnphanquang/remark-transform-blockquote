@@ -75,7 +75,7 @@ Where `<preset>` is listed in the following sections.
 
 Alerts that matches [Github Markdown Alerts][gfm.alert].
 
-![Screenshot of "github" preset](https://raw.githubusercontent.com/vnphanquang/remark-transform-blockquote/next/.github/assets/preset-github.jpg)
+![Screenshot of "github" preset](https://raw.githubusercontent.com/vnphanquang/remark-transform-blockquote/main/.github/assets/preset-github.jpg)
 
 Input:
 
@@ -143,7 +143,7 @@ import svg from 'remark-transform-blockquote/presets/github/icons/note.svg'; // 
 
 Sidenotes based on [Josh Comeau's Blog](https://www.joshwcomeau.com/blog/how-i-built-my-blog-v2/).
 
-![Screenshot of "comeau" preset](https://raw.githubusercontent.com/vnphanquang/remark-transform-blockquote/next/.github/assets/preset-comeau.jpg)
+![Screenshot of "comeau" preset](https://raw.githubusercontent.com/vnphanquang/remark-transform-blockquote/main/.github/assets/preset-comeau.jpg)
 
 Input:
 
