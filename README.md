@@ -251,6 +251,10 @@ unified.use(remarkTransformBlockquote, {
 - [lin-stephanie/remark-admonition-to-blockquote-callout](https://github.com/lin-stephanie/remark-admonition-to-blockquote-callout)
 - [incentro-ecx/remark-github-admonitions-to-directives](https://github.com/incentro-ecx/remark-github-admonitions-to-directives)
 
+---
+
+[built by me, not agents](https://gist.github.com/vnphanquang/018ee2b2080c9dc9890327f3d233998b).
+
 [gfm.alert]: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts
 
 <!-- header badges -->
