@@ -43,7 +43,6 @@
 		"README.md"
 	],
 	"scripts": {
-		"prepare": "lefthook install",
 		"lint:es": "eslint .",
 		"lint:style": "stylelint '**/*.css'",
 		"lint": "run-p lint:*",
