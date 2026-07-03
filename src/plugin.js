@@ -27,9 +27,6 @@ export function remarkTransformBlockquote(options) {
 		mappings = [...mappings, ...PRESET_TO_MAPPINGS[preset]];
 	}
 
-	/**
-	 * @param {import('mdast').Root} tree - The markdown AST tree
-	 */
 	return function (tree) {
 		if (mappings.length === 0) return;
 
@@ -81,7 +78,7 @@ export function remarkTransformBlockquote(options) {
 					/** @type {any} */ (node.data).hName = mapping.tag ?? 'div';
 
 					if (mapping.hooks?.post) {
-						mapping.hooks.post(node, index, parent, tree)
+						mapping.hooks.post(node, index, parent, tree);
 					}
 
 					break;
