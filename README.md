@@ -258,6 +258,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
 ## More `unified` Plugins by Me
 
 - [remark-codeblock-source](https://github.com/vnphanquang/remark-codeblock-source)
+- [remark-enhance-codeblock](https://github.com/vnphanquang/remark-enhance-codeblock)
 
 ---
 
