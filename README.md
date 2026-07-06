@@ -255,6 +255,10 @@ unified.use(remarkTransformBlockquote, {
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
 
+## More `unified` Plugins by Me
+
+- [remark-codeblock-source](https://github.com/vnphanquang/remark-codeblock-source)
+
 ---
 
 [built by me, not agents](https://gist.github.com/vnphanquang/018ee2b2080c9dc9890327f3d233998b).
