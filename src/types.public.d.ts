@@ -60,7 +60,7 @@ export interface RemarkTransformBlockquoteMapping {
 	 * attributes to add to `node.data.hProperties`,
 	 * typically this should be the corresponding attributes if converted to HTML
 	 */
-	attributes: Record<string, string>;
+	attributes?: Record<string, string>;
 	/**
 	 * additional processing to perform on matching node
 	 */

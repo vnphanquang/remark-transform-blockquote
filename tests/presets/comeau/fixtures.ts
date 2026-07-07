@@ -11,7 +11,7 @@ export const VARIANTS = PRESET_MAPPINGS_COMEAU.map((mapping) => {
 	return {
 		name: variant,
 		text: VARIANT_TO_TEXT[variant],
-		title: mapping.attributes['data-title'],
-		class: mapping.attributes.class,
+		title: mapping.attributes?.['data-title'],
+		class: mapping.attributes?.class,
 	};
 });
