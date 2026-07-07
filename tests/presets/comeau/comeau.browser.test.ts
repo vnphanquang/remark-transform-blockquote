@@ -19,6 +19,10 @@ beforeAll(async () => {
 					font-size: 16px;
 				}
 
+				code {
+					font-family: Arial;
+				}
+
 				main {
 					@media (width >= 35.1875rem) {
 						padding-inline: 2rem;

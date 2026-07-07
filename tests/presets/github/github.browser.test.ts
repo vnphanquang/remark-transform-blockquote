@@ -18,6 +18,10 @@ beforeAll(async () => {
 					font-family: Arial, sans-serif;
 					font-size: 16px;
 				}
+
+				code {
+					font-family: Arial;
+				}
 			</style>
 	`,
 	);
