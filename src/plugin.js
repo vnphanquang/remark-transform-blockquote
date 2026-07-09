@@ -1,7 +1,9 @@
 /* eslint-disable jsdoc/reject-any-type */
 import { CONTINUE, SKIP, visit } from 'unist-util-visit';
 
+import { ErrorInvalidPreset, createInactivatedMetaWarning } from './errors.js';
 import { PRESET_MAPPINGS_COMEAU, PRESET_MAPPINGS_GITHUB } from './presets/index.js';
+import { parseAttributesFromMeta } from './utils/parse-attributes-from-meta.js';
 
 const PRESET_TO_MAPPINGS = /** @type {const} */ ({
 	github: PRESET_MAPPINGS_GITHUB,
@@ -20,9 +22,7 @@ export function remarkTransformBlockquote(options) {
 
 	if (preset) {
 		if (!Object.keys(PRESET_TO_MAPPINGS).includes(preset)) {
-			throw new Error(
-				`Invalid preset "${preset}". Valid presets are: ${Object.keys(PRESET_TO_MAPPINGS).join(', ')}`,
-			);
+			throw new ErrorInvalidPreset(preset);
 		}
 		mappings = [...mappings, ...PRESET_TO_MAPPINGS[preset]];
 	}
@@ -40,13 +40,39 @@ export function remarkTransformBlockquote(options) {
 
 			const firstTextNode = firstParagraphNode.children[0];
 			if (!firstTextNode || firstTextNode.type !== 'text') return CONTINUE;
+			const firstLineText = firstTextNode.value.split('\n')[0].trim();
 
-			const firstLineText = firstTextNode.value.trim().split('\n')[0];
+			const [, marker] = firstLineText.match(/^\[([^\]]+)\]\s*`{0,2}$/) || [];
+			if (!marker) return CONTINUE;
 
-			if (!firstLineText.startsWith('[!')) return CONTINUE;
-			if (!firstLineText.endsWith(']')) return CONTINUE;
+			/** @type {string | null} */
+			let meta = null;
+			/** @type {import('./types.public').MetaAttribute[]} */
+			let attributes = [];
+			const metaCodeNode = firstParagraphNode.children[1];
+			if (metaCodeNode && metaCodeNode.type === 'inlineCode') {
+				meta = metaCodeNode.value.trim();
 
-			const marker = firstLineText.slice(1, -1);
+				// remove this node from the AST tree
+				firstParagraphNode.children.splice(1, 1);
+
+				// trim newline from the next text node, if any
+				const secondNode = firstParagraphNode.children[1];
+				if (secondNode && secondNode.type === 'text') {
+					if (secondNode.value === '\n') {
+						// if the entire text node is just a newline, remove it entirely
+						firstParagraphNode.children.splice(1, 1);
+					} else {
+						secondNode.value = secondNode.value.replace(/^\n+/, '');
+					}
+				}
+
+				if (!options?.meta) {
+					console.warn(createInactivatedMetaWarning(meta));
+				} else {
+					attributes = parseAttributesFromMeta(meta);
+				}
+			}
 
 			for (const mapping of mappings) {
 				if (mapping.marker === marker) {
@@ -70,22 +96,57 @@ export function remarkTransformBlockquote(options) {
 					// adding attributes to `hProperties`, as documented here:
 					// https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
 					node.data ??= {};
-					/** @type {any} */ (node.data).hProperties ??= {};
-					for (const [key, value] of Object.entries(mapping.attributes ?? {})) {
-						/** @type {any} */ (node.data).hProperties[key] = value;
-					}
-
 					/** @type {any} */ (node.data).hName = mapping.tag ?? 'div';
 
+					/** @type {any} */ (node.data).hProperties ??= {};
+					const hProperties = /** @type {Record<string, any>} */ (
+						/** @type {any} */ (node.data).hProperties
+					);
+					for (const [key, value] of Object.entries(mapping.attributes ?? {})) {
+						hProperties[key] = value;
+					}
+					if (options?.meta && attributes.length) {
+						for (const attribute of attributes) {
+							if (!attribute.merge) continue;
+							if (attribute.type === 'boolean') {
+								if (attribute.value) {
+									hProperties[attribute.name] = true;
+								} else {
+									delete hProperties[attribute.name];
+								}
+							} else {
+								const { name, value, merge } = attribute;
+								if (merge === 'append') {
+									hProperties[name] = `${hProperties[name] ?? ''}${value}`;
+								} else if (merge === 'prepend') {
+									hProperties[name] = `${value}${hProperties[name] ?? ''}`;
+								} else {
+									hProperties[name] = value;
+								}
+							}
+						}
+					}
+
 					if (mapping.hooks?.post) {
-						mapping.hooks.post(node, index, parent, tree);
+						mapping.hooks.post({
+							node,
+							index,
+							parent,
+							tree,
+							...(options?.meta && meta && {
+								meta: {
+									raw: meta,
+									attributes,
+								},
+							}),
+						});
 					}
 
 					break;
 				}
 			}
 
-			return [SKIP, index];
+			return SKIP;
 		});
 	};
 }

@@ -222,6 +222,48 @@ SVG icons are also available should you need to reference / use them. For exampl
 import svg from 'remark-transform-blockquote/presets/comeau/icons/info.svg'; // replace with <variant>.svg as needed
 ```
 
+## Per-Transformation Attributes via Meta String
+
+Sometimes it is helpful to allow users to customise the final HTML attribute per transformed element.
+For this, turn on the `meta` option. For example, using [preset:github](#preset-github)...
+
+```typescript
+unified.use(remarkTransformBlockquote, {
+	preset: 'github',
+	meta: true,
+});
+```
+
+...user can provide i18n translation for the title:
+
+```markdown
+> [!NOTE] `data-title="Thông tin"`
+> "Thông tin" is Vietnamese for "Information"
+```
+
+### Meta String
+
+The meta string is an inline code, i.e. `\`...\``, that follows immediately after the marker.
+Inside, it can contain key-value pairs for string attribute, or standalone strings that will be
+understood as boolean attributes. Some example:
+
+- Simple string attribute, no space: `[!MARKER] \`attr=value\``
+- For string attribute with single quote in value, wrap in double quote: `[!MARKER] \`attr="value with 'single' quote"\``
+- For string attribute with double quote in value, wrap in single quote: `[!MARKER] \`attr='value with "double" quote'\``
+- Boolean attributes, implicitly `true`: `[!MARKER] \`attr\``
+- Boolean attributes with explicit value: `[!MARKER] \`attr=true attr=false\`
+
+### Merging Strategy via Prefixes
+
+By default, parsed attributes from meta string will replace existing attributes with the same name in `node.data.hProperties`. This can be changed by providing a `prefix` to the attribute name:
+
+- `^`: prepend the value to existing attribute value, e.g. \`^class=" prepend"\,
+- `$`: append the value to existing attribute value, e.g. \`$class="append "\`,
+- `!`: parsed but skip merging, useful if you want to do some post-processing with [hooks](#complex-transformation), e.g. \`!attr="internal"\`.
+
+Note that, on boolean attributes, `^` and `$` can be used but have no effect. Also, remember to
+consider adding space when prepending / appending attribute values.
+
 ## Complex Transformation
 
 Should you need to do more than just change tag name / attributes, you can specify a `post` hook
@@ -234,7 +276,7 @@ unified.use(remarkTransformBlockquote, {
 			tag: 'section',
 			attributes: { class: 'custom-block' },
 			hooks: {
-				post: (node, index, parent, tree) => {
+				post: ({ node, index, parent, tree, meta }) => {
 					// do something with node, e.g. adding child, changing content, etc.
 				},
 			},

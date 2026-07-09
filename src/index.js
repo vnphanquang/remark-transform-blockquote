@@ -2,6 +2,7 @@
 
 export * from "./plugin.js";
 export * from "./types.public.js";
+export { ErrorInvalidPreset } from './errors.js';
 
 import { remarkTransformBlockquote } from "./plugin.js";
 export default remarkTransformBlockquote;

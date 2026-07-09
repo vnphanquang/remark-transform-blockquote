@@ -2,9 +2,10 @@ import { u } from 'unist-builder';
 
 /**
  * @internal
- * @param {import('mdast').Blockquote} node - matching blockquote node
+ * @param {{ node: import('mdast').Blockquote }} args - matching blockquote node
  */
-function addDecorationNode(node) {
+function addDecorationNode(args) {
+	const { node } = args;
 	node.children.splice(
 		0,
 		0,

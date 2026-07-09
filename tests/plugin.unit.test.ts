@@ -3,10 +3,11 @@ import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
-import { describe, test } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 
+import { createInactivatedMetaWarning } from '../src/errors';
 import { remarkTransformBlockquote } from '../src/plugin';
-import type { RemarkTransformBlockquoteMapping } from '../src/types.public';
+import type { MetaAttribute, RemarkTransformBlockquoteMapping } from '../src/types.public';
 
 import { html, markdown, matchStringIgnoringWhitespace, processWithPlugin } from './utils';
 
@@ -16,6 +17,10 @@ const mappings: RemarkTransformBlockquoteMapping[] = [
 		attributes: { class: 'custom-block' },
 	},
 ];
+
+afterEach(() => {
+	vi.restoreAllMocks();
+});
 
 test('regular blockquote is not affected', async () => {
 	const output = await processWithPlugin(markdown`> This is a regular blockquote.`, { mappings });
@@ -456,6 +461,210 @@ describe('should preserve placeholder/variable pattern', () => {
 					<p>This is a custom blockquote with a placeholder variable: {variable_name}</p>
 				</div>
 			`,
+		);
+	});
+});
+
+describe('should handle meta string', () => {
+	test('skip empty meta', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`\`
+			> This is a custom blockquote with empty meta string.
+		`;
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p>\`\` This is a custom blockquote with empty meta string.</p>
+				</div>
+				`,
+		);
+	});
+
+	test('print warning if not explicitly allowed', async () => {
+		const meta = 'class="ignored"';
+		const input = markdown`
+			> [!CUSTOM] \`${meta}\`
+			> This is a custom blockquote with a meta string that should be ignored.
+		`;
+
+		const spiedWarning = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p>This is a custom blockquote with a meta string that should be ignored.</p>
+				</div>
+				`,
+		);
+		expect(spiedWarning).toHaveBeenCalledWith(createInactivatedMetaWarning(meta));
+	});
+
+	test('trim newline from next node', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`attr="value" boolean\`
+			> This is a custom blockquote with a meta string that should be ignored.
+		`;
+		vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p>This is a custom blockquote with a meta string that should be ignored.</p>
+				</div>
+				`,
+		);
+	});
+
+	test('remove newline-only next node', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`attr="value" boolean\`
+			> **This** meta string should be ignored.
+		`;
+		vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p><strong>This</strong> meta string should be ignored.</p>
+				</div>
+				`,
+		);
+	});
+
+	test('no content', async () => {
+		const input = markdown` > [!CUSTOM] \`attr="value" boolean\` `;
+		vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(ouptut, html`<div class="custom-block"></div>`);
+	});
+
+	test('prepending string attribute', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`^class="extra " ^data-attr=value\`
+			> This is a custom blockquote with a meta string that should be applied
+		`;
+		const ouptut = await processWithPlugin(input, { mappings, meta: true });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="extra custom-block" data-attr="value">
+					<p>This is a custom blockquote with a meta string that should be applied</p>
+				</div>
+				`,
+		);
+	});
+
+	test('appending string attribute', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`$class=" extra" $data-attr=value\`
+			> This is a custom blockquote with a meta string that should be applied
+		`;
+		const ouptut = await processWithPlugin(input, { mappings, meta: true });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block extra" data-attr="value">
+					<p>This is a custom blockquote with a meta string that should be applied</p>
+				</div>
+				`,
+		);
+	});
+
+	test('replacing string attribute', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`class="replaced"\`
+			> This is a custom blockquote with a meta string that should be applied
+		`;
+		const ouptut = await processWithPlugin(input, { mappings, meta: true });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="replaced">
+					<p>This is a custom blockquote with a meta string that should be applied</p>
+				</div>
+				`,
+		);
+	});
+
+	test('replacing boolean attribute', async () => {
+		const input = markdown`
+			> [!CUSTOM] \`data-boolean1=false data-boolean2 data-boolean3="true" ^data-boolean4=false $data-boolean5=true\`
+			> This is a custom blockquote with a meta string that should be applied
+		`;
+		const ouptut = await processWithPlugin(input, {
+			mappings: [
+				{
+					marker: '!CUSTOM',
+					tag: 'div',
+					attributes: { 'data-boolean1': true },
+				},
+			],
+			meta: true,
+		});
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div data-boolean2 data-boolean3 data-boolean5>
+					<p>This is a custom blockquote with a meta string that should be applied</p>
+				</div>
+				`,
+		);
+	});
+
+	test('skipping attributes', async () => {
+		const post = vi.fn();
+		const input = markdown`
+			> [!CUSTOM] \`!class="internal" data-boolean=false !data-boolean-internal\`
+			> This is a custom blockquote with a meta string that should be skipped
+		`;
+		const ouptut = await processWithPlugin(input, {
+			mappings: [
+				{
+					marker: '!CUSTOM',
+					tag: 'div',
+					attributes: { class: 'custom-block', 'data-boolean': true },
+					hooks: { post },
+				},
+			],
+			meta: true,
+		});
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p>This is a custom blockquote with a meta string that should be skipped</p>
+				</div>
+				`,
+		);
+		expect(post).toHaveBeenCalledWith(
+			expect.objectContaining({
+				meta: {
+					raw: `!class="internal" data-boolean=false !data-boolean-internal`,
+					attributes: [
+						{
+							type: 'string',
+							name: 'class',
+							value: 'internal',
+						},
+						{
+							type: 'boolean',
+							name: 'data-boolean',
+							value: false,
+							merge: 'replace',
+						},
+						{
+							type: 'boolean',
+							name: 'data-boolean-internal',
+							value: true,
+						},
+					] satisfies MetaAttribute[],
+				},
+			}),
 		);
 	});
 });

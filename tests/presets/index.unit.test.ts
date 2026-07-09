@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 
+import { ErrorInvalidPreset } from '../../src/errors.js';
 import { markdown, processWithPlugin } from '../utils';
 
 test('should throw error for unknown preset', async () => {
@@ -8,7 +9,5 @@ test('should throw error for unknown preset', async () => {
 		preset: 'unknown' as any,
 	});
 
-	await expect(output).rejects.toThrow(
-		'Invalid preset "unknown". Valid presets are: github, comeau',
-	);
+	await expect(output).rejects.toThrow(ErrorInvalidPreset);
 });

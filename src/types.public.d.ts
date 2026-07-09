@@ -20,6 +20,52 @@ export interface RemarkTransformBlockquoteOptions {
 	 *   corresponding CSS at `remark-transform-blockquote/presets/<preset>.css`.
 	 */
 	preset?: 'github' | 'comeau';
+	/**
+	 * allow meta string after the marker, e.g. \[!MARKER\] \`prop="value" boolean\`.
+	 *
+	 * - `false` | `undefined` (default): meta string is skipped
+	 * - `true`: meta string is parsed and potentially merged into `node.data.hProperties`
+	 *
+	 * ## Restrictions
+	 *
+	 * A meta string must be written within an inline code, e.g. \`...\`. It can contain key-value pairs
+	 * for string attribute, or standalone strings that will be understood as boolean attributes:
+	 *
+	 * - attributes are typically space-separated,
+	 * - value for string attribute can be written without quotes if there is no space in it, e.g.
+	 *   \`prop=value\`, or wrapped in single or double quotes depending on your preference and
+	 *   whether it contains spaces and/or quotes,
+	 * - boolean attributes can also be given explicit value, e.g. \`prop=true\` or \`prop=false\`.
+	 *
+	 * ## Prefixes
+	 *
+	 * By default, parsed attributes from meta string will replace existing attributes with the same name
+	 * in `node.data.hProperties`. This can be changed by providing a `prefix` to the attribute name:
+	 *
+	 * - `^`: prepend the value to existing attribute value, e.g. \`^class=" prepend"\
+	 * - `$`: append the value to existing attribute value, e.g. \`$class="append "\`
+	 * - `!`: parsed but skip merging, useful if you want to do some post-processing with hooks, e.g. \`!attr="internal"\`
+	 *
+	 * Note that `^` and `$` have no effect on boolean attributes.
+	 *
+	 * ## Example
+	 *
+	 * Meta can be used to overwrite attributes defined in a preset. For example, using the `github` preset,
+	 * user can add i18n translation for the title per instance.
+	 *
+	 * ```js
+	 * await unified().use(remarkParse).use(remarkTransformBlockquote, {
+	 *   preset: 'github',
+	 *   meta: true,
+	 * })
+	 * ```
+	 *
+	 * ```markdown
+	 * > \[!INFO\] \`data-title="Thông tin"\`
+	 * > "Thông tin" is Vietnamese for "Information"
+	 * ```
+	 */
+	meta?: boolean;
 }
 
 export interface RemarkTransformBlockquoteMapping {
@@ -43,10 +89,10 @@ export interface RemarkTransformBlockquoteMapping {
 	 * ...will match:
 	 *
 	 * ```markdown
-	 * > [!INFO]
+	 * > \[!INFO\]
 	 * > This is an info blockquote
 	 *
-	 * > [!WARNING]
+	 * > \[!WARNING\]
 	 * > This is a warning blockquote
 	 * ```
 	 */
@@ -60,7 +106,7 @@ export interface RemarkTransformBlockquoteMapping {
 	 * attributes to add to `node.data.hProperties`,
 	 * typically this should be the corresponding attributes if converted to HTML
 	 */
-	attributes?: Record<string, string>;
+	attributes?: Record<string, string | boolean>;
 	/**
 	 * additional processing to perform on matching node
 	 */
@@ -68,11 +114,31 @@ export interface RemarkTransformBlockquoteMapping {
 		/**
 		 * called after the blockquote node is matched and transformed with `tag` & `attributes` options
 		 */
-		post?: (
-			node: Blockquote,
-			index: number | undefined,
-			parent: Root | RootContent | undefined,
-			tree: Root,
-		) => void;
+		post?: (args: {
+			node: Blockquote;
+			index: number | undefined;
+			parent: Root | RootContent | undefined;
+			tree: Root;
+			meta?: {
+				raw: string;
+				attributes: MetaAttribute[];
+			};
+		}) => void;
 	};
 }
+
+type MetaAttributeMerge = 'prepend' | 'append' | 'replace';
+export interface MetaStringAttribute {
+	type: 'string';
+	name: string;
+	value: string;
+	/** how to merge the attribute into `hProperties`, if at all */
+	merge?: MetaAttributeMerge;
+}
+export interface MetaBooleanAttribute {
+	type: 'boolean';
+	name: string;
+	value: boolean;
+	merge?: 'replace';
+}
+export type MetaAttribute = MetaStringAttribute | MetaBooleanAttribute;

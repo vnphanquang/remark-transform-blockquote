@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import asDefault, { remarkTransformBlockquote as asNamed } from '../src';
+import asDefault, { ErrorInvalidPreset, remarkTransformBlockquote as asNamed } from '../src';
 
 test('named exported should be available', () => {
 	expect(asNamed).toBeDefined();
@@ -12,4 +12,8 @@ test('default exported should be available', () => {
 
 test('default and named exports should be the same', () => {
 	expect(asDefault).toBe(asNamed);
+});
+
+test('error classes should be exported', () => {
+	expect(ErrorInvalidPreset).toBeDefined();
 });
