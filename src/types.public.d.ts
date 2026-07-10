@@ -121,7 +121,7 @@ export interface RemarkTransformBlockquoteMapping {
 			tree: Root;
 			meta?: {
 				raw: string;
-				attributes: MetaAttribute[];
+				attributes: Record<string, MetaAttribute>;
 			};
 		}) => void;
 	};

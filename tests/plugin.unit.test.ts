@@ -645,24 +645,24 @@ describe('should handle meta string', () => {
 			expect.objectContaining({
 				meta: {
 					raw: `#class="internal" data-boolean=false #data-boolean-internal`,
-					attributes: [
-						{
+					attributes: {
+						class: {
 							type: 'string',
 							name: 'class',
 							value: 'internal',
 						},
-						{
+						['data-boolean']: {
 							type: 'boolean',
 							name: 'data-boolean',
 							value: false,
 							merge: 'replace',
 						},
-						{
+						['data-boolean-internal']: {
 							type: 'boolean',
 							name: 'data-boolean-internal',
 							value: true,
 						},
-					] satisfies MetaAttribute[],
+					} satisfies Record<string, MetaAttribute>,
 				},
 			}),
 		);

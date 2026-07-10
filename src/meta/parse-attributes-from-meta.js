@@ -1,9 +1,10 @@
 /**
+ * parse a meta string into a record of attributes
  * @param {string} meta - the meta string to parse
- * @returns {import('../types.public').MetaAttribute[]} - a record of attributes parsed from the meta string
+ * @returns {Record<string, import('../types.public').MetaAttribute>} - a record of attributes parsed from the meta string
  */
 export function parseAttributesFromMeta(meta) {
-	if (!meta) return [];
+	if (!meta) return {};
 
 	/** @type {Record<string, import('../types.public').MetaAttribute>} */
 	const attributes = {};
@@ -35,5 +36,5 @@ export function parseAttributesFromMeta(meta) {
 			}
 		}
 	}
-	return Object.values(attributes);
+	return attributes;
 }

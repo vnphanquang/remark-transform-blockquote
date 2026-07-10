@@ -2,8 +2,8 @@
 import { CONTINUE, SKIP, visit } from 'unist-util-visit';
 
 import { ErrorInvalidPreset, createInactivatedMetaWarning } from './errors.js';
+import { mergeMetaAttributes, parseAttributesFromMeta } from './meta/index.js';
 import { PRESET_MAPPINGS_COMEAU, PRESET_MAPPINGS_GITHUB } from './presets/index.js';
-import { parseAttributesFromMeta } from './utils/parse-attributes-from-meta.js';
 
 const PRESET_TO_MAPPINGS = /** @type {const} */ ({
 	github: PRESET_MAPPINGS_GITHUB,
@@ -47,8 +47,8 @@ export function remarkTransformBlockquote(options) {
 
 			/** @type {string | null} */
 			let meta = null;
-			/** @type {import('./types.public').MetaAttribute[]} */
-			let attributes = [];
+			/** @type {Record<string, import('./types.public').MetaAttribute>} */
+			let attributes = {};
 			const metaCodeNode = firstParagraphNode.children[1];
 			if (metaCodeNode && metaCodeNode.type === 'inlineCode') {
 				meta = metaCodeNode.value.trim();
@@ -105,27 +105,7 @@ export function remarkTransformBlockquote(options) {
 					for (const [key, value] of Object.entries(mapping.attributes ?? {})) {
 						hProperties[key] = value;
 					}
-					if (options?.meta && attributes.length) {
-						for (const attribute of attributes) {
-							if (!attribute.merge) continue;
-							if (attribute.type === 'boolean') {
-								if (attribute.value) {
-									hProperties[attribute.name] = true;
-								} else {
-									delete hProperties[attribute.name];
-								}
-							} else {
-								const { name, value, merge } = attribute;
-								if (merge === 'append') {
-									hProperties[name] = `${hProperties[name] ?? ''}${value}`;
-								} else if (merge === 'prepend') {
-									hProperties[name] = `${value}${hProperties[name] ?? ''}`;
-								} else {
-									hProperties[name] = value;
-								}
-							}
-						}
-					}
+					mergeMetaAttributes({ attributes, into: hProperties, inplace: true });
 
 					if (mapping.hooks?.post) {
 						mapping.hooks.post({
@@ -133,12 +113,13 @@ export function remarkTransformBlockquote(options) {
 							index,
 							parent,
 							tree,
-							...(options?.meta && meta && {
-								meta: {
-									raw: meta,
-									attributes,
-								},
-							}),
+							...(options?.meta &&
+								meta && {
+									meta: {
+										raw: meta,
+										attributes,
+									},
+								}),
 						});
 					}
 
