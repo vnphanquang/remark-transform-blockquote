@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
 import css from '../../../src/presets/github/github.css?url';
-import { html, markdown, processWithPlugin } from '../../utils';
+import { html, markdown, processWithPlugin } from '../../test-utils';
 
 import { VARIANTS } from './fixtures';
 

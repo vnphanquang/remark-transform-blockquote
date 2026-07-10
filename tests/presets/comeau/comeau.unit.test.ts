@@ -1,6 +1,6 @@
 import { describe, test } from 'vitest';
 
-import { html, markdown, matchStringIgnoringWhitespace, processWithPlugin } from '../../utils';
+import { html, markdown, matchStringIgnoringWhitespace, processWithPlugin } from '../../test-utils';
 
 import { VARIANTS } from './fixtures';
 

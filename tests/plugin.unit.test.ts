@@ -9,7 +9,7 @@ import { createInactivatedMetaWarning } from '../src/errors';
 import { remarkTransformBlockquote } from '../src/plugin';
 import type { MetaAttribute, RemarkTransformBlockquoteMapping } from '../src/types.public';
 
-import { html, markdown, matchStringIgnoringWhitespace, processWithPlugin } from './utils';
+import { html, markdown, matchStringIgnoringWhitespace, processWithPlugin } from './test-utils';
 
 const mappings: RemarkTransformBlockquoteMapping[] = [
 	{

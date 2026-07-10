@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
 import { ErrorInvalidPreset } from '../../src/errors.js';
-import { markdown, processWithPlugin } from '../utils';
+import { markdown, processWithPlugin } from '../test-utils';
 
 test('should throw error for unknown preset', async () => {
 	const output = processWithPlugin(markdown`> [!UNKNOWN]`, {
