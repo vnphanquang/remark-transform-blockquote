@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- [`88f2942`](https://github.com/vnphanquang/remark-transform-blockquote/commit/88f2942a86fc05af8eeba82328bff78f68106ad6) Thanks [@vnphanquang](https://github.com/vnphanquang)! - export utils module
+
 ## 1.1.1
 
 ### Patch Changes
