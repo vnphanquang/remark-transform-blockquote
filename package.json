@@ -32,6 +32,10 @@
 			"types": "./types/index.d.ts",
 			"import": "./src/index.js"
 		},
+		"./utils": {
+			"types": "./types/index.d.ts",
+			"import": "./src/utils/index.js"
+		},
 		"./presets/github.css": "./src/presets/github/github.css",
 		"./presets/icons/*.svg": "./src/presets/github/icons/*.svg",
 		"./presets/comeau.css": "./src/presets/comeau/comeau.css",
