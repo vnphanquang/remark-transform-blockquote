@@ -278,6 +278,7 @@ unified.use(remarkTransformBlockquote, {
 			hooks: {
 				post: ({ node, index, parent, tree, meta }) => {
 					// do something with node, e.g. adding child, changing content, etc.
+					// meta is only available if `meta: true` is set in the options.
 				},
 			},
 		},
@@ -304,7 +305,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
 
 ---
 
-[built by me, not agents](https://gist.github.com/vnphanquang/018ee2b2080c9dc9890327f3d233998b).
+[built by human, not agents](https://gist.github.com/vnphanquang/018ee2b2080c9dc9890327f3d233998b).
 
 [gfm.alert]: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts
 
