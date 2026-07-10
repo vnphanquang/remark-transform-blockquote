@@ -44,7 +44,7 @@ export interface RemarkTransformBlockquoteOptions {
 	 *
 	 * - `^`: prepend the value to existing attribute value, e.g. \`^class=" prepend"\
 	 * - `$`: append the value to existing attribute value, e.g. \`$class="append "\`
-	 * - `!`: parsed but skip merging, useful if you want to do some post-processing with hooks, e.g. \`!attr="internal"\`
+	 * - `#`: parsed but skip merging, useful if you want to do some post-processing with hooks, e.g. \`#attr="internal"\`
 	 *
 	 * Note that `^` and `$` have no effect on boolean attributes.
 	 *

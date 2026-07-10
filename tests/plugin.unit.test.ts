@@ -619,7 +619,7 @@ describe('should handle meta string', () => {
 	test('skipping attributes', async () => {
 		const post = vi.fn();
 		const input = markdown`
-			> [!CUSTOM] \`!class="internal" data-boolean=false !data-boolean-internal\`
+			> [!CUSTOM] \`#class="internal" data-boolean=false #data-boolean-internal\`
 			> This is a custom blockquote with a meta string that should be skipped
 		`;
 		const ouptut = await processWithPlugin(input, {
@@ -644,7 +644,7 @@ describe('should handle meta string', () => {
 		expect(post).toHaveBeenCalledWith(
 			expect.objectContaining({
 				meta: {
-					raw: `!class="internal" data-boolean=false !data-boolean-internal`,
+					raw: `#class="internal" data-boolean=false #data-boolean-internal`,
 					attributes: [
 						{
 							type: 'string',

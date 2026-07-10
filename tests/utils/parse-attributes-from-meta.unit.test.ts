@@ -73,7 +73,7 @@ describe('can parse boolean attribute', () => {
 		expect(parseAttributesFromMeta("$attr='true'")).toEqual(expected);
 	});
 
-	test('! prefix means no merge', () => {
+	test('# prefix means no merge', () => {
 		const expected = [
 			{
 				type: 'boolean',
@@ -81,10 +81,10 @@ describe('can parse boolean attribute', () => {
 				value: true,
 			},
 		] satisfies MetaAttribute[];
-		expect(parseAttributesFromMeta('!attr=true')).toEqual(expected);
-		expect(parseAttributesFromMeta('!attr="true"')).toEqual(expected);
-		expect(parseAttributesFromMeta("!attr='true'")).toEqual(expected);
-		expect(parseAttributesFromMeta('!attr')).toEqual(expected);
+		expect(parseAttributesFromMeta('#attr=true')).toEqual(expected);
+		expect(parseAttributesFromMeta('#attr="true"')).toEqual(expected);
+		expect(parseAttributesFromMeta("#attr='true'")).toEqual(expected);
+		expect(parseAttributesFromMeta('#attr')).toEqual(expected);
 	});
 });
 
@@ -155,7 +155,7 @@ describe('can parse string attribute', () => {
 		expect(parseAttributesFromMeta("$attr='value'")).toEqual(expected);
 	});
 
-	test('! prefix means no merge', () => {
+	test('# prefix means no merge', () => {
 		const expected = [
 			{
 				type: 'string',
@@ -163,9 +163,9 @@ describe('can parse string attribute', () => {
 				value: 'value',
 			},
 		] as MetaAttribute[];
-		expect(parseAttributesFromMeta('!attr=value')).toEqual(expected);
-		expect(parseAttributesFromMeta('!attr="value"')).toEqual(expected);
-		expect(parseAttributesFromMeta("!attr='value'")).toEqual(expected);
+		expect(parseAttributesFromMeta('#attr=value')).toEqual(expected);
+		expect(parseAttributesFromMeta('#attr="value"')).toEqual(expected);
+		expect(parseAttributesFromMeta("#attr='value'")).toEqual(expected);
 	});
 });
 
@@ -197,13 +197,13 @@ describe('can parse multiple', () => {
 	] satisfies MetaAttribute[];
 
 	test('space separated', () => {
-		expect(parseAttributesFromMeta(`attr1=value1 ^attr2="value2" $attr3='value3' !attr4`)).toEqual(
+		expect(parseAttributesFromMeta(`attr1=value1 ^attr2="value2" $attr3='value3' #attr4`)).toEqual(
 			expected,
 		);
 	});
 
 	test('without space', () => {
-		expect(parseAttributesFromMeta(`attr1="value1"^attr2="value2"$attr3='value3'!attr4`)).toEqual(
+		expect(parseAttributesFromMeta(`attr1="value1"^attr2="value2"$attr3='value3'#attr4`)).toEqual(
 			expected,
 		);
 	});
@@ -211,7 +211,7 @@ describe('can parse multiple', () => {
 
 test('should take last occurence if appears multiple times', () => {
 	expect(
-		parseAttributesFromMeta('attr=frist $attr="second" !attr=third ^attr=forth attr attr="last"'),
+		parseAttributesFromMeta('attr=frist $attr="second" #attr=third ^attr=forth attr attr="last"'),
 	).toEqual([
 		{
 			type: 'string',
@@ -220,7 +220,7 @@ test('should take last occurence if appears multiple times', () => {
 			merge: 'replace',
 		},
 	] as MetaAttribute[]);
-	expect(parseAttributesFromMeta('attr=frist $attr="second" !attr=third ^attr=forth attr')).toEqual(
+	expect(parseAttributesFromMeta('attr=frist $attr="second" #attr=third ^attr=forth attr')).toEqual(
 		[
 			{
 				type: 'boolean',

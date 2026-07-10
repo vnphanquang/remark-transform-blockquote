@@ -7,7 +7,7 @@ export function parseAttributesFromMeta(meta) {
 
 	/** @type {Record<string, import('../types.public').MetaAttribute>} */
 	const attributes = {};
-	const matches = meta.matchAll(/([\^$!]?)([\w-]+)(?:=(\w+)|="([^"]+)"|='([^']+)')?/g);
+	const matches = meta.matchAll(/([\^$#]?)([\w-]+)(?:=(\w+)|="([^"]+)"|='([^']+)')?/g);
 	for (const match of matches) {
 		const [, prefix, name, valueNoQuote, valueInDoubleQuote, valueInSingleQuote] = match;
 		const value = valueNoQuote || valueInDoubleQuote || valueInSingleQuote;

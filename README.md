@@ -259,7 +259,7 @@ By default, parsed attributes from meta string will replace existing attributes 
 
 - `^`: prepend the value to existing attribute value, e.g. `^class=" prepend"`,
 - `$`: append the value to existing attribute value, e.g. `$class="append "`,
-- `!`: parsed but skip merging, useful if you want to do some post-processing with [hooks](#complex-transformation), e.g. `!attr="internal"`.
+- `#`: parsed but skip merging, useful if you want to do some post-processing with [hooks](#complex-transformation), e.g. `#attr="internal"`.
 
 Note that, on boolean attributes, `^` and `$` can be used but have no effect. Also, remember to
 consider adding space when prepending / appending attribute values.
