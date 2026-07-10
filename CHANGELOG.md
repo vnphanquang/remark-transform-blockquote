@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- [`37403a5`](https://github.com/vnphanquang/remark-transform-blockquote/commit/37403a5d48356fa73fdf5cf1592c8f05069db98e) Thanks [@vnphanquang](https://github.com/vnphanquang)! - [BREAKING] use `#` instead of `!` prefix to indicate no merge
+
 ## 1.1.0
 
 ### Minor Changes
