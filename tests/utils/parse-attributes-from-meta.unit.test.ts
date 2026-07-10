@@ -103,6 +103,30 @@ describe('can parse string attribute', () => {
 		expect(parseAttributesFromMeta("attr='value'")).toEqual(expected);
 	});
 
+	test('with single quote in value', () => {
+		const expected = [
+			{
+				type: 'string',
+				name: 'attr',
+				value: "value with 'single' quote",
+				merge: 'replace',
+			},
+		] as MetaAttribute[];
+		expect(parseAttributesFromMeta(`attr="value with 'single' quote"`)).toEqual(expected);
+	});
+
+	test('with double quote in value', () => {
+		const expected = [
+			{
+				type: 'string',
+				name: 'attr',
+				value: 'value with "double" quote',
+				merge: 'replace',
+			},
+		] as MetaAttribute[];
+		expect(parseAttributesFromMeta(`attr='value with "double" quote'`)).toEqual(expected);
+	});
+
 	test('^ prefix means prepend', () => {
 		const expected = [
 			{
