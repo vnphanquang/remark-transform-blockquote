@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- [`9e8dc0a`](https://github.com/vnphanquang/remark-transform-blockquote/commit/9e8dc0aa27b25ac2fd260b19706bf2af657de2f5) Thanks [@vnphanquang](https://github.com/vnphanquang)! - [BREAKING] `options.mapping.hooks.post` now accept the `meta` in params as `Record<string, MetaAttribute>` instead of array
+
+- [`9e8dc0a`](https://github.com/vnphanquang/remark-transform-blockquote/commit/9e8dc0aa27b25ac2fd260b19706bf2af657de2f5) Thanks [@vnphanquang](https://github.com/vnphanquang)! - [BREAKING] `utils` submodule is now `meta`
+
+- [`9e8dc0a`](https://github.com/vnphanquang/remark-transform-blockquote/commit/9e8dc0aa27b25ac2fd260b19706bf2af657de2f5) Thanks [@vnphanquang](https://github.com/vnphanquang)! - export `mergeMetaAttributes` utility in `meta` submodule
+
 ## 1.2.0
 
 ### Minor Changes
