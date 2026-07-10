@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- [`28f8f88`](https://github.com/vnphanquang/remark-transform-blockquote/commit/28f8f88a381b4c400c7c967403c0a7141dd20f4e) Thanks [@vnphanquang](https://github.com/vnphanquang)! - allow passing (replacing, appending, prepending) attributes via a meta string, e.g. `[!CUSTOM] \`$class='added'\``
+- [`28f8f88`](https://github.com/vnphanquang/remark-transform-blockquote/commit/28f8f88a381b4c400c7c967403c0a7141dd20f4e) Thanks [@vnphanquang](https://github.com/vnphanquang)! - allow passing (replacing, appending, prepending) attributes via a meta string, e.g. ``[!CUSTOM] `$class=' added'` ``
 
 ### Patch Changes
 
