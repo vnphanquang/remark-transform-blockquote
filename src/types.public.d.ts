@@ -68,6 +68,17 @@ export interface RemarkTransformBlockquoteOptions {
 	meta?: boolean;
 }
 
+export type RemarkTransformBlockquoteHookPost = (args: {
+	node: Blockquote;
+	index: number | undefined;
+	parent: Root | RootContent | undefined;
+	tree: Root;
+	meta?: {
+		raw: string;
+		attributes: Record<string, MetaAttribute>;
+	};
+}) => void;
+
 export interface RemarkTransformBlockquoteMapping {
 	/**
 	 * pattern to match against, in the format "!<string>" where <string> is case-sensitive.
@@ -114,16 +125,7 @@ export interface RemarkTransformBlockquoteMapping {
 		/**
 		 * called after the blockquote node is matched and transformed with `tag` & `attributes` options
 		 */
-		post?: (args: {
-			node: Blockquote;
-			index: number | undefined;
-			parent: Root | RootContent | undefined;
-			tree: Root;
-			meta?: {
-				raw: string;
-				attributes: Record<string, MetaAttribute>;
-			};
-		}) => void;
+		post?: RemarkTransformBlockquoteHookPost;
 	};
 }
 
