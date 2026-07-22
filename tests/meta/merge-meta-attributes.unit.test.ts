@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, test } from 'vitest';
 
+import type { MetaAttribute } from '../../src';
 import { mergeMetaAttributes } from '../../src/meta/merge-meta-attributes';
 
 test('skip if attributes is empty', () => {
@@ -186,5 +187,38 @@ describe('should respect merge strategy for boolean attribute', () => {
 			},
 		});
 		expect(merged.attr).toBe(true);
+	});
+});
+
+describe('mergeClassToClassName', () => {
+	const into = {
+		class: 'class',
+		className: 'className',
+	};
+	const attributes: Record<string, MetaAttribute> = {
+		class: {
+			name: 'class',
+			type: 'string',
+			value: ' new-class',
+			merge: 'append',
+		},
+		className: {
+			name: 'className',
+			type: 'string',
+			value: ' new-className',
+			merge: 'append',
+		},
+	};
+
+	test('merge correctly', () => {
+		const merged = mergeMetaAttributes({ attributes, into });
+		expect(merged.class).toBeUndefined();
+		expect(merged.className).toBe('className new-className class new-class');
+	});
+
+	test('can turn off', () => {
+		const merged = mergeMetaAttributes({ attributes, into, mergeClassToClassName: false });
+		expect(merged.class).toBe('class new-class');
+		expect(merged.className).toBe('className new-className');
 	});
 });

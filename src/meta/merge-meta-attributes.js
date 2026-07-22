@@ -5,6 +5,7 @@
  * @property {Record<string, import('../types.public').MetaAttribute>} attributes - the meta attributes to merge
  * @property {Record<string, any>} into - the object to merge the attributes into
  * @property {boolean} [inplace=false] - whether to modify the object in place or return a new object
+ * @property {boolean} [mergeClassToClassName=true] - whether to merge the `class` attribute into `className` (recommended when working with `data.hProperties`)
  */
 
 /**
@@ -13,7 +14,7 @@
  * @returns {Record<string, any>} - the object with the merged attributes
  */
 export function mergeMetaAttributes(options) {
-	const { attributes, into, inplace = false } = options;
+	const { attributes, into, inplace = false, mergeClassToClassName = true } = options;
 	const ref = inplace ? into : { ...into };
 	const aAttributes = Object.values(attributes);
 	if (!aAttributes.length) return ref;
@@ -35,6 +36,11 @@ export function mergeMetaAttributes(options) {
 				ref[name] = value;
 			}
 		}
+	}
+
+	if (mergeClassToClassName && 'class' in ref) {
+		ref.className = ref.className ? `${ref.className} ${ref.class}` : ref.class;
+		delete ref.class;
 	}
 	return ref;
 }

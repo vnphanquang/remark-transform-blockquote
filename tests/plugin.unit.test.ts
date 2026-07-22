@@ -552,7 +552,7 @@ describe('should handle meta string', () => {
 		matchStringIgnoringWhitespace(
 			ouptut,
 			html`
-				<div class="extra custom-block" data-attr="value">
+				<div data-attr="value" class="extra custom-block">
 					<p>This is a custom blockquote with a meta string that should be applied</p>
 				</div>
 				`,
@@ -568,7 +568,7 @@ describe('should handle meta string', () => {
 		matchStringIgnoringWhitespace(
 			ouptut,
 			html`
-				<div class="custom-block extra" data-attr="value">
+				<div data-attr="value" class="custom-block extra">
 					<p>This is a custom blockquote with a meta string that should be applied</p>
 				</div>
 				`,
