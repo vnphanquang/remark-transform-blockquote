@@ -25,6 +25,7 @@ beforeAll(async () => {
 			</style>
 	`,
 	);
+	await page.viewport(800, 600);
 });
 afterAll(() => {
 	document.head.querySelectorAll('link[rel="stylesheet"]').forEach((link) => link.remove());

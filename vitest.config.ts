@@ -17,12 +17,18 @@ export default defineConfig({
 			},
 			{
 				test: {
-					include: ['tests/**/*.browser.test.ts'],
-					name: 'browser',
+					include: ['tests/**/*.visual.test.ts'],
+					name: 'visual',
 					browser: {
 						enabled: true,
 						provider: playwright(),
-						instances: [{ browser: 'chromium' }],
+						headless: true,
+						instances: [
+							{
+								browser: 'chromium',
+								headless: true,
+							},
+						],
 					},
 				},
 			},
