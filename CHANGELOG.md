@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.2
+
+### Patch Changes
+
+- [`f0529ff`](https://github.com/vnphanquang/remark-transform-blockquote/commit/f0529ffbc3b2b301879b20aad4ec501a2e37725e) Thanks [@vnphanquang](https://github.com/vnphanquang)! - merge class -> className to keep consistent with mdast/hast convention, avoid multiple class attributes set on end HTML node
+
+- [`20a11c6`](https://github.com/vnphanquang/remark-transform-blockquote/commit/20a11c67ee297bf4bee178697a8e0b37eca4f4a9) Thanks [@vnphanquang](https://github.com/vnphanquang)! - export `RemarkTransformBlockquoteHookPost` type
+
 ## 1.2.1
 
 ### Patch Changes
