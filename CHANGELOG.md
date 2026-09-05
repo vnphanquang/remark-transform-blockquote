@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.3
+
+### Patch Changes
+
+- [`7595783`](https://github.com/vnphanquang/remark-transform-blockquote/commit/759578366fe322508b644a225a24caeabf3718c4) Thanks [@vnphanquang](https://github.com/vnphanquang)! - conform to unified Plugin typing for better typescript support
+
 ## 1.2.2
 
 ### Patch Changes
