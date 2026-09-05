@@ -11,10 +11,10 @@ const PRESET_TO_MAPPINGS = /** @type {const} */ ({
 });
 
 /**
+ * @type {import('unified').Plugin<[import('./types.public').RemarkTransformBlockquoteOptions?], import('mdast').Root>}
+ *
  * Remark plugin that turns a blockquote with special marker into a customisable element,
  * similar to {@link https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts|Github Markdown Alerts}
- * @param {import('./types.public').RemarkTransformBlockquoteOptions} [options] - configure the plugin behavior
- * @returns {import('unified').Transformer<import('mdast').Root, import('mdast').Root>}
  */
 export function remarkTransformBlockquote(options) {
 	const { preset } = options ?? {};
