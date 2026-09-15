@@ -35,7 +35,30 @@ test('regular blockquote is not affected', async () => {
 });
 
 test('skip if no mappings provided', async () => {
-	const output = await processWithPlugin(markdown`> [!CUSTOM] This is a regular blockquote`);
+	const output = await processWithPlugin(markdown`
+		> [!CUSTOM]
+		> This is a regular blockquote
+	`);
+	matchStringIgnoringWhitespace(
+		output,
+		html`
+			<blockquote>
+				<p>[!CUSTOM] This is a regular blockquote</p>
+			</blockquote>
+		`,
+	);
+});
+
+test('skip if no matching mapping', async () => {
+	const output = await processWithPlugin(
+		markdown`
+			> [!CUSTOM]
+			> This is a regular blockquote
+		`,
+		{
+			mappings: [{ marker: '!MATCH' }],
+		},
+	);
 	matchStringIgnoringWhitespace(
 		output,
 		html`
@@ -47,7 +70,10 @@ test('skip if no mappings provided', async () => {
 });
 
 test('skip if no options provided', async () => {
-	const output = await processWithPlugin(markdown`> [!CUSTOM] This is a regular blockquote`);
+	const output = await processWithPlugin(markdown`
+		> [!CUSTOM]
+		> This is a regular blockquote
+	`);
 	matchStringIgnoringWhitespace(
 		output,
 		html`
@@ -117,7 +143,7 @@ test('skip if missing closing bracket', async () => {
 });
 
 test('skip if no newline between marker and content', async () => {
-	const output = await processWithPlugin(markdown` > [!CUSTOM] This is a regular blockquote `, {
+	const output = await processWithPlugin(markdown` > [!CUSTOM] This is a regular blockquote`, {
 		mappings,
 	});
 
