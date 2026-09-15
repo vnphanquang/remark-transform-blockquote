@@ -75,56 +75,56 @@ export function remarkTransformBlockquote(options) {
 			}
 
 			for (const mapping of mappings) {
-				if (mapping.marker === marker) {
-					if (firstTextNode.value.trim() === `[${marker}]`) {
-						// if the entire text node is just the marker, remove it entirely
-						firstParagraphNode.children.shift();
-						// if there is any newline between marker and content, remove that node
-						const secondParagraphNode = node.children[0];
-						if (
-							secondParagraphNode &&
-							secondParagraphNode.type === 'paragraph' &&
-							secondParagraphNode.children.length === 0
-						) {
-							node.children.splice(0, 1);
-						}
-					} else {
-						// otherwise, remove just the marker from the text node
-						firstTextNode.value = firstTextNode.value.replace(`[${marker}]`, '').trim();
+				if (mapping.marker !== marker) continue
+
+				if (firstTextNode.value.trim() === `[${marker}]`) {
+					// if the entire text node is just the marker, remove it entirely
+					firstParagraphNode.children.shift();
+					// if there is any newline between marker and content, remove that node
+					const secondParagraphNode = node.children[0];
+					if (
+						secondParagraphNode &&
+						secondParagraphNode.type === 'paragraph' &&
+						secondParagraphNode.children.length === 0
+					) {
+						node.children.splice(0, 1);
 					}
-
-					// adding attributes to `hProperties`, as documented here:
-					// https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
-					node.data ??= {};
-					/** @type {any} */ (node.data).hName = mapping.tag ?? 'div';
-
-					/** @type {any} */ (node.data).hProperties ??= {};
-					const hProperties = /** @type {Record<string, any>} */ (
-						/** @type {any} */ (node.data).hProperties
-					);
-					for (const [key, value] of Object.entries(mapping.attributes ?? {})) {
-						hProperties[key] = value;
-					}
-					mergeMetaAttributes({ attributes, into: hProperties, inplace: true });
-
-					if (mapping.hooks?.post) {
-						mapping.hooks.post({
-							node,
-							index,
-							parent,
-							tree,
-							...(options?.meta &&
-								meta && {
-									meta: {
-										raw: meta,
-										attributes,
-									},
-								}),
-						});
-					}
-
-					break;
+				} else {
+					// otherwise, remove just the marker from the text node
+					firstTextNode.value = firstTextNode.value.replace(`[${marker}]`, '').trim();
 				}
+
+				// adding attributes to `hProperties`, as documented here:
+				// https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
+				node.data ??= {};
+				/** @type {any} */ (node.data).hName = mapping.tag ?? 'div';
+
+				/** @type {any} */ (node.data).hProperties ??= {};
+				const hProperties = /** @type {Record<string, any>} */ (
+					/** @type {any} */ (node.data).hProperties
+				);
+				for (const [key, value] of Object.entries(mapping.attributes ?? {})) {
+					hProperties[key] = value;
+				}
+				mergeMetaAttributes({ attributes, into: hProperties, inplace: true });
+
+				if (mapping.hooks?.post) {
+					mapping.hooks.post({
+						node,
+						index,
+						parent,
+						tree,
+						...(options?.meta &&
+							meta && {
+								meta: {
+									raw: meta,
+									attributes,
+								},
+							}),
+					});
+				}
+
+				break;
 			}
 
 			return SKIP;
