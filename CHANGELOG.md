@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.4
+
+### Patch Changes
+
+- [`2b40de9`](https://github.com/vnphanquang/remark-transform-blockquote/commit/2b40de90119b91921487c0d6e2fc98ab1fc29626) Thanks [@vnphanquang](https://github.com/vnphanquang)! - skip early if no matching mapping, avoid consuming meta node
+
 ## 1.2.3
 
 ### Patch Changes

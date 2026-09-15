@@ -1,6 +1,6 @@
 {
 	"name": "remark-transform-blockquote",
-	"version": "1.2.3",
+	"version": "1.2.4",
 	"description": "customize Markdown blockquote",
 	"license": "MIT",
 	"author": {
