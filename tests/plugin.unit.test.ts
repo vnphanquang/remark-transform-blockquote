@@ -243,6 +243,25 @@ describe('custom blockquote is transformed', () => {
 		);
 	});
 
+	test('preserve whitespace between first text node and the next node', async () => {
+		const output = await processWithPlugin(
+			markdown`
+				> [!CUSTOM]
+				> Some text, then \`inline code\`, then some text
+			`,
+			{ mappings },
+		);
+
+		matchStringIgnoringWhitespace(
+			output,
+			html`
+				<div class="custom-block">
+					<p>Some text, then <code>inline code</code>, then some text</p>
+				</div>
+		`,
+		);
+	});
+
 	test('mixed in other content', async () => {
 		const output = await processWithPlugin(
 			markdown`
@@ -538,7 +557,7 @@ describe('should handle meta string', () => {
 			ouptut,
 			html`
 				<div class="custom-block">
-					<p>Some<code>inline-code</code> may otherwise be recognised as meta</p>
+					<p>Some <code>inline-code</code> may otherwise be recognised as meta</p>
 				</div>
 				`,
 		);

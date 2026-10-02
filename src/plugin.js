@@ -71,7 +71,8 @@ export function remarkTransformBlockquote(options) {
 				linebreak = firstTextNode.value.endsWith('\n');
 			} else {
 				// otherwise, remove just the marker from the text node
-				firstTextNode.value = firstTextNode.value.replace(`[${marker}]`, '').trim();
+				// trim start only, otherwise the following content may collapse backwards
+				firstTextNode.value = firstTextNode.value.replace(`[${marker}]`, '').trimStart();
 			}
 
 			/** @type {string | null} */
