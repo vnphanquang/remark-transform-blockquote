@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.5
+
+### Patch Changes
+
+- [`f17945a`](https://github.com/vnphanquang/remark-transform-blockquote/commit/f17945a1205b144abc8995dd70ce883eea0b0261) Thanks [@vnphanquang](https://github.com/vnphanquang)! - avoid collapsing whitespace between the first text node and the next
+
+- [`bbc9c8b`](https://github.com/vnphanquang/remark-transform-blockquote/commit/bbc9c8bfb2d06ccdfc6e471de3344095372f68a8) Thanks [@vnphanquang](https://github.com/vnphanquang)! - don't process an inline-code that doesn't follow immediately after marker
+
 ## 1.2.4
 
 ### Patch Changes
