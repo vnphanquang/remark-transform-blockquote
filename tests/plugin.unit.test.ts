@@ -528,6 +528,38 @@ describe('should handle meta string', () => {
 		expect(spiedWarning).toHaveBeenCalledWith(createInactivatedMetaWarning(meta));
 	});
 
+	test('skip if inline code not following immediately after marker', async () => {
+		const input = markdown`
+			> [!CUSTOM]
+			> Some \`inline-code\` may otherwise be recognised as meta
+		`;
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p>Some<code>inline-code</code> may otherwise be recognised as meta</p>
+				</div>
+				`,
+		);
+	});
+
+	test('skip if inline code follows after a linebreak', async () => {
+		const input = markdown`
+			> [!CUSTOM]
+			> \`inline-code\` if leading the content shouldn't be a meta
+		`;
+		const ouptut = await processWithPlugin(input, { mappings });
+		matchStringIgnoringWhitespace(
+			ouptut,
+			html`
+				<div class="custom-block">
+					<p><code>inline-code</code> if leading the content shouldn't be a meta</p>
+				</div>
+				`,
+		);
+	});
+
 	test('trim newline from next node', async () => {
 		const input = markdown`
 			> [!CUSTOM] \`attr="value" boolean\`
@@ -566,7 +598,7 @@ describe('should handle meta string', () => {
 		const input = markdown` > [!CUSTOM] \`attr="value" boolean\` `;
 		vi.spyOn(console, 'warn').mockImplementation(() => {});
 		const ouptut = await processWithPlugin(input, { mappings });
-		matchStringIgnoringWhitespace(ouptut, html`<div class="custom-block"></div>`);
+		matchStringIgnoringWhitespace(ouptut, html`<div class="custom-block"><p></p></div>`);
 	});
 
 	test('prepending string attribute', async () => {

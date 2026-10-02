@@ -55,36 +55,7 @@ export function remarkTransformBlockquote(options) {
 
 			if (!mapping) return CONTINUE;
 
-			/** @type {string | null} */
-			let meta = null;
-			/** @type {Record<string, import('./types.public').MetaAttribute>} */
-			let attributes = {};
-			const metaCodeNode = firstParagraphNode.children[1];
-
-			if (metaCodeNode && metaCodeNode.type === 'inlineCode') {
-				meta = metaCodeNode.value.trim();
-
-				// remove this node from the AST tree
-				firstParagraphNode.children.splice(1, 1);
-
-				// trim newline from the next text node, if any
-				const secondNode = firstParagraphNode.children[1];
-				if (secondNode && secondNode.type === 'text') {
-					if (secondNode.value === '\n') {
-						// if the entire text node is just a newline, remove it entirely
-						firstParagraphNode.children.splice(1, 1);
-					} else {
-						secondNode.value = secondNode.value.replace(/^\n+/, '');
-					}
-				}
-
-				if (!options?.meta) {
-					console.warn(createInactivatedMetaWarning(meta));
-				} else {
-					attributes = parseAttributesFromMeta(meta);
-				}
-			}
-
+			let linebreak = false;
 			if (firstTextNode.value.trim() === `[${marker}]`) {
 				// if the entire text node is just the marker, remove it entirely
 				firstParagraphNode.children.shift();
@@ -97,9 +68,40 @@ export function remarkTransformBlockquote(options) {
 				) {
 					node.children.splice(0, 1);
 				}
+				linebreak = firstTextNode.value.endsWith('\n');
 			} else {
 				// otherwise, remove just the marker from the text node
 				firstTextNode.value = firstTextNode.value.replace(`[${marker}]`, '').trim();
+			}
+
+			/** @type {string | null} */
+			let meta = null;
+			/** @type {Record<string, import('./types.public').MetaAttribute>} */
+			let attributes = {};
+			let nextNode = firstParagraphNode.children.at(0);
+			if (!linebreak && nextNode?.type === 'inlineCode') {
+				const metaCodeNode = nextNode;
+				meta = metaCodeNode.value.trim();
+
+				// remove this node from the AST tree
+				firstParagraphNode.children.splice(0, 1);
+
+				// trim newline from the next text node, if any
+				nextNode = firstParagraphNode.children.at(0);
+				if (nextNode && nextNode.type === 'text') {
+					if (nextNode.value === '\n') {
+						// if the entire text node is just a newline, remove it entirely
+						firstParagraphNode.children.splice(0, 1);
+					} else {
+						nextNode.value = nextNode.value.replace(/^\n+/, '');
+					}
+				}
+
+				if (!options?.meta) {
+					console.warn(createInactivatedMetaWarning(meta));
+				} else {
+					attributes = parseAttributesFromMeta(meta);
+				}
 			}
 
 			// adding attributes to `hProperties`, as documented here:
